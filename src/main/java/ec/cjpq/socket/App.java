@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.GridLayout;
 
 import ec.cjpq.socket.servidor.ServidorUI;
+import ec.cjpq.socket.cliente.ClienteUI;
+
 
 /**
  * Clase principal de la aplicación
@@ -34,7 +36,7 @@ public class App {
         if (opcion.equals("Servidor"))
             new ServidorUI().crearUI();
         else if (opcion.equals("Cliente"))
-            System.out.println("...");
+            new ClienteUI().crearUI();
         else 
             System.exit(0);
     }
