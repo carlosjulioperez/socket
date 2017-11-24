@@ -13,4 +13,5 @@ Iniciar clases:
     mvn exec:java -Dexec.mainClass="ec.cjpq.socket.inicio.IniciarServidor"
     mvn exec:java -Dexec.mainClass="ec.cjpq.socket.inicio.IniciarCliente"
 
+    mvn exec:java -Dexec.mainClass="ec.cjpq.socket.App"
 
