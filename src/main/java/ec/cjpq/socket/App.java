@@ -10,12 +10,13 @@ import ec.cjpq.socket.cliente.ClienteUI;
 /**
  * Clase principal de la aplicación
  * @author Carlos Julio Pérez Quizhpe carlosjulioperez@gmail.com
- * 2017-11-24
+ * 2017-11-24, 25
  */ 
 public class App {
 
     public static void main( String[] args ) {
-        seleccion();
+        //seleccion();
+        dialogo();
     }
 
     private static void seleccion(){
@@ -34,32 +35,38 @@ public class App {
         // opcion will be null if the user clicks Cancel
         System.out.printf("Opción es %s.\n", opcion);
         if (opcion.equals("Servidor"))
-            new ServidorUI().crearUI();
+            new ServidorUI().crearUI("1234");
         else if (opcion.equals("Cliente"))
-            new ClienteUI().crearUI();
+            new ClienteUI().crearUI("1234");
         else 
             System.exit(0);
     }
 
-    private static void servidorUI(){
-        String[] items = {"One", "Two", "Three", "Four", "Five"};
+    private static void dialogo(){
+        String[] items = {"Servidor", "Cliente"};
         JComboBox combo = new JComboBox(items);
-        JTextField field1 = new JTextField("1234.56");
-        JTextField field2 = new JTextField("9876.54");
+        JTextField puerto = new JTextField("1234"); 
+
         JPanel panel = new JPanel(new GridLayout(0, 1));
+        panel.add(new JLabel("Por Carlos Julio Pérez Quizhpe"));
+        panel.add(new JLabel("carlosjulioperez@gmail.com"));
+        panel.add(new JLabel(""));
+        panel.add(new JLabel("Seleccione la aplicación Socket a ejecutar"));
         panel.add(combo);
-        panel.add(new JLabel("Field 1:"));
-        panel.add(field1);
-        panel.add(new JLabel("Field 2:"));
-        panel.add(field2);
-        int result = JOptionPane.showConfirmDialog(null, panel, "Test",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        panel.add(new JLabel("Puerto"));
+        panel.add(puerto);
+        
+        int result = JOptionPane.showConfirmDialog(null, panel, "Aplicación Socket",
+            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        
         if (result == JOptionPane.OK_OPTION) {
-            System.out.println(combo.getSelectedItem()
-                    + " " + field1.getText()
-                    + " " + field2.getText());
+            String opcion = (String)combo.getSelectedItem();
+            if (opcion.equals("Servidor"))
+                new ServidorUI().crearUI(puerto.getText());
+            else if (opcion.equals("Cliente"))
+                new ClienteUI().crearUI(puerto.getText());
         } else {
-            System.out.println("Cancelled");
+            System.exit(0);
         }
     }
 }

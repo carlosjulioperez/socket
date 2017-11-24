@@ -9,7 +9,7 @@ import java.net.*;
 /**
  * Clase Servidor con Interfaz gráfica (UI)
  * @author Carlos Julio Pérez Quizhpe carlosjulioperez@gmail.com
- * 2017-11-24
+ * 2017-11-24, 25
  * https://stackoverflow.com/questions/28308584/connecting-two-computers-for-client-server-communication-in-java
  */ 
 public class ServidorUI{
@@ -19,12 +19,15 @@ public class ServidorUI{
     private DataInputStream dis;
     private DataOutputStream dos;
 
-    private JTextField puerto;
+    String numeroPuerto;
+
+    private boolean continuar;
     
     private void iniciar(){
         try{
+            continuar = true;
             System.out.println("Server Started");
-            ss=new ServerSocket(Integer.parseInt(puerto.getText()));
+            ss=new ServerSocket(Integer.parseInt(numeroPuerto));
             s=ss.accept();
             System.out.println(s);
             System.out.println("CLIENT CONNECTED");
@@ -39,43 +42,46 @@ public class ServidorUI{
     
     public void ServerChat() throws IOException {
         String str, s1;
-        do {
+            
+        do{
             str=dis.readUTF();
             System.out.println("Client Message:"+str);
             BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
             s1=br.readLine();
             dos.writeUTF(s1);
             dos.flush();
-        } while(!s1.equals("bye"));
+        }while(continuar);
+        //}while(!s1.equals("bye"));
+
     }
     
-    public void crearUI(){
+    public void crearUI(String numeroPuerto){
+        this.numeroPuerto = numeroPuerto;
 
-        JFrame frame = new JFrame("Socket Servidor");
+        String direccionIP = "";
+        try{
+            InetAddress ip = InetAddress.getLocalHost(); 
+            direccionIP = ip.getHostAddress();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        final JFrame frame = new JFrame("Socket Servidor " + direccionIP);
         frame.setSize(400,300);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 
-        JTextField direccionIP  = new JTextField("localhost"); 
-        //JTextField puerto       = new JTextField("1234"); 
-        puerto       = new JTextField("1234"); 
-        
-        JTextField estado       = new JTextField("Detenido"); 
-        estado.setEditable(false);
+        JTextField puerto = new JTextField(numeroPuerto); 
+        puerto.setEditable(false);
         
         JTextField mensaje = new JTextField(""); 
         mensaje.setEditable(false);
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
         
-        panel.add(new JLabel("Dirección IP del servidor"));
-        panel.add(direccionIP);
-        
         panel.add(new JLabel("Puerto"));
         panel.add(puerto);
-        
-        panel.add(new JLabel("Estado"));
-        panel.add(estado);
         
         panel.add(new JLabel("Mensaje"));
         panel.add(mensaje);
@@ -85,7 +91,6 @@ public class ServidorUI{
         JButton btnIniciar = new JButton("Iniciar");
         JButton btnDetener = new JButton("Detener");
 
-
         //Definir las acciones de los botones
         btnIniciar.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
@@ -93,7 +98,15 @@ public class ServidorUI{
             }
         });
 
-        panelBotones.add(btnIniciar);
+        btnDetener.addActionListener(new ActionListener() { 
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false); //you can't see me!
+                frame.dispose(); //Destroy the JFrame object
+                System.exit(0);
+            }
+        });
+
+        //panelBotones.add(btnIniciar);
         panelBotones.add(btnDetener);
 
         JPanel container = new JPanel();
@@ -108,10 +121,10 @@ public class ServidorUI{
         //frame.pack();
 
         frame.setLocationRelativeTo(null); 
-
         frame.setVisible(true); 
 
-
+        iniciar();
+        
     }
 }
 

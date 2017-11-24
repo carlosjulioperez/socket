@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Clase Cliente con Interfaz gráfica (UI)
  * @author Carlos Julio Pérez Quizhpe carlosjulioperez@gmail.com
- * 2017-11-24
+ * 2017-11-24, 25
  * https://stackoverflow.com/questions/28308584/connecting-two-computers-for-client-server-communication-in-java
  */ 
 public class ClienteUI{
@@ -52,7 +52,7 @@ public class ClienteUI{
         }
     }
     
-    public void crearUI(){
+    public void crearUI(String numeroPuerto){
 
         JFrame frame = new JFrame("Socket Cliente");
         frame.setSize(400,300);
@@ -60,7 +60,8 @@ public class ClienteUI{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 
         direccionIP     = new JTextField("localhost"); 
-        puerto          = new JTextField("1234"); 
+        puerto          = new JTextField(numeroPuerto); 
+        puerto.setEditable(false);
         mensaje         = new JTextField(""); 
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
