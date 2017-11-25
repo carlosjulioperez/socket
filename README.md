@@ -10,10 +10,12 @@ Creación de proyecto maven:
     mvn archetype:generate -DgroupId=ec.cjpq.socket -DartifactId=socket -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 
 Iniciar clases con maven:
+
     mvn exec:java -Dexec.mainClass="ec.cjpq.socket.App"
 
 Iniciar la aplicación jar:
     Desde la línea de comandos:
+
         java -jar socket-1.0-SNAPSHOT.jar
 
-    O simplemente hacer doble clic en el archivo jar (es autoejecutable)
+    O simplemente hacer doble clic en el archivo jar (autoejecutable y multiplataforma) desde el sistema operativo 
