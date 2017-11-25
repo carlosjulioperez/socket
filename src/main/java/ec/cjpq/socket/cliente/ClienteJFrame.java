@@ -17,18 +17,19 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class ClientChatForm extends JFrame implements ActionListener {
-	static Socket conn;
+public class ClienteJFrame extends JFrame implements ActionListener {
+	
+    static Socket conn;
 	JPanel panel;
 	JTextField NewMsg;
 	JTextArea ChatHistory;
 	JButton Send;
 
-	public ClientChatForm() throws UnknownHostException, IOException {
+	public ClienteJFrame(String direccionIP ) throws UnknownHostException, IOException {
 		panel = new JPanel();
 		NewMsg = new JTextField();
 		ChatHistory = new JTextArea();
-		Send = new JButton("Send");
+		Send = new JButton("Enviar");
 		this.setSize(500, 500);
 		this.setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -41,7 +42,8 @@ public class ClientChatForm extends JFrame implements ActionListener {
 		Send.setBounds(375, 400, 95, 30);
 		panel.add(Send);
 		Send.addActionListener(this);
-		conn = new Socket(InetAddress.getLocalHost(), 2000);
+		//conn = new Socket(InetAddress.getLocalHost(), 2000);
+		conn = new Socket(InetAddress.getByName(direccionIP), 2000);
 
 		/*
 		 * for remote pc use ip address of server with function
@@ -49,22 +51,19 @@ public class ClientChatForm extends JFrame implements ActionListener {
 		 * ChatHistory.setText("Connected to Server");
 		 */
 
-		ChatHistory.setText("Connected to Server");
-		this.setTitle("Client");
+		ChatHistory.setText("Conectado con el servidor");
+		this.setTitle("Cliente");
 		while (true) {
 			try {
 				DataInputStream dis = new DataInputStream(conn.getInputStream());
 				String string = dis.readUTF();
-				ChatHistory.setText(ChatHistory.getText() + '\n' + "Server:"
-						+ string);
+				ChatHistory.setText(ChatHistory.getText() + '\n' + "Servidor: " + string);
 			} catch (Exception e1) {
-				ChatHistory.setText(ChatHistory.getText() + '\n'
-						+ "Message sending fail:Network Error");
+                ChatHistory.setText(ChatHistory.getText() + '\n' + "Desconexión");
 				try {
 					Thread.sleep(3000);
 					System.exit(0);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -73,23 +72,18 @@ public class ClientChatForm extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if ((e.getSource() == Send) && (NewMsg.getText() != "")) {
 
-			ChatHistory.setText(ChatHistory.getText() + '\n' + "Me:"
-					+ NewMsg.getText());
+			ChatHistory.setText(ChatHistory.getText() + '\n' + "Cliente: " + NewMsg.getText());
 			try {
-				DataOutputStream dos = new DataOutputStream(
-						conn.getOutputStream());
+				DataOutputStream dos = new DataOutputStream( conn.getOutputStream());
 				dos.writeUTF(NewMsg.getText());
 			} catch (Exception e1) {
-				ChatHistory.setText(ChatHistory.getText() + '\n'
-						+ "Message sending fail:Network Error");
+                ChatHistory.setText(ChatHistory.getText() + '\n' + "Desconexión");
 				try {
 					Thread.sleep(3000);
 					System.exit(0);
 				} catch (InterruptedException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 			}
@@ -97,9 +91,8 @@ public class ClientChatForm extends JFrame implements ActionListener {
 		}
 	}
 
-	public static void main(String[] args) throws UnknownHostException,
-			IOException {
-		ClientChatForm chatForm = new ClientChatForm();
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		new ClienteJFrame("192.168.1.5");
 	}
 }
 
