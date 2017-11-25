@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import ec.cjpq.socket.servidor.ServidorUI;
 import ec.cjpq.socket.cliente.ClienteUI;
 
+import ec.cjpq.socket.servidor.ServerChatForm;
+import ec.cjpq.socket.cliente.ClientChatForm;
 
 /**
  * Clase principal de la aplicación
@@ -43,30 +45,34 @@ public class App {
     }
 
     private static void dialogo(){
-        String[] items = {"Servidor", "Cliente"};
-        JComboBox combo = new JComboBox(items);
-        JTextField puerto = new JTextField("1234"); 
+        try{
+            String[] items = {"Servidor", "Cliente"};
+            JComboBox combo = new JComboBox(items);
+            JTextField puerto = new JTextField("1234"); 
 
-        JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.add(new JLabel("Por Carlos Julio Pérez Quizhpe"));
-        panel.add(new JLabel("carlosjulioperez@gmail.com"));
-        panel.add(new JLabel(""));
-        panel.add(new JLabel("Seleccione la aplicación Socket a ejecutar"));
-        panel.add(combo);
-        panel.add(new JLabel("Puerto"));
-        panel.add(puerto);
-        
-        int result = JOptionPane.showConfirmDialog(null, panel, "Aplicación Socket",
-            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        
-        if (result == JOptionPane.OK_OPTION) {
-            String opcion = (String)combo.getSelectedItem();
-            if (opcion.equals("Servidor"))
-                new ServidorUI().crearUI(puerto.getText());
-            else if (opcion.equals("Cliente"))
-                new ClienteUI().crearUI(puerto.getText());
-        } else {
-            System.exit(0);
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            panel.add(new JLabel("Por Carlos Julio Pérez Quizhpe"));
+            panel.add(new JLabel("carlosjulioperez@gmail.com"));
+            panel.add(new JLabel(""));
+            panel.add(new JLabel("Seleccione la aplicación Socket a ejecutar"));
+            panel.add(combo);
+            panel.add(new JLabel("Puerto"));
+            panel.add(puerto);
+
+            int result = JOptionPane.showConfirmDialog(null, panel, "Aplicación Socket",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result == JOptionPane.OK_OPTION) {
+                String opcion = (String)combo.getSelectedItem();
+                if (opcion.equals("Servidor"))
+                    new ServerChatForm();
+                else if (opcion.equals("Cliente"))
+                    new ClientChatForm();
+            } else {
+                System.exit(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

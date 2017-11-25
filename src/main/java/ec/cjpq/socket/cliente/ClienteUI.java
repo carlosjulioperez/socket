@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  */ 
 public class ClienteUI{
 
-    private Socket s;
+    private Socket s = null;
     private DataInputStream dis;
     private DataOutputStream dos;
 
@@ -32,7 +32,7 @@ public class ClienteUI{
             dos= new DataOutputStream(s.getOutputStream());
         }
         catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
     
@@ -42,13 +42,13 @@ public class ClienteUI{
             InputStream stream = new ByteArrayInputStream(mensaje.getText().getBytes(StandardCharsets.UTF_8.name()));
 
             BufferedReader br= new BufferedReader(new InputStreamReader(stream));
-            String s1;
-            s1=br.readLine();
+            String s1 = mensaje.getText();
+            //s1=br.readLine();
             dos.writeUTF(s1);
             dos.flush();
             System.out.println("Server Message:"+dis.readUTF());
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
     
@@ -71,7 +71,15 @@ public class ClienteUI{
         
         panel.add(new JLabel("Puerto"));
         panel.add(puerto);
-        
+
+        JButton btnIniciar = new JButton("Iniciar");
+        btnIniciar.addActionListener(new ActionListener() { 
+            public void actionPerformed(ActionEvent e) {
+                iniciar();
+            }
+        });
+        panel.add(btnIniciar);
+
         panel.add(new JLabel("Mensaje"));
         panel.add(mensaje);
 
@@ -80,7 +88,6 @@ public class ClienteUI{
         //Definir las acciones de los botones
         btnMensaje.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
-                iniciar();
                 enviarMensaje();
             }
         });
@@ -94,7 +101,6 @@ public class ClienteUI{
         frame.setLocationRelativeTo(null); 
 
         frame.setVisible(true); 
-
 
     }
 }

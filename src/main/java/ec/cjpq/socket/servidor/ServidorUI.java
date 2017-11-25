@@ -36,7 +36,7 @@ public class ServidorUI{
             ServerChat();
         }
         catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
     
